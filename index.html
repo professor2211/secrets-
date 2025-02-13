@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valentine's Day</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #ffebee;
+      font-family: 'Arial', sans-serif;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      position: relative;
+      width: 90%;
+      max-width: 500px;
+    }
+
+    h1 {
+      color: #d32f2f;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    #yesButton {
+      background-color: #d32f2f;
+      color: white;
+    }
+
+    #noButton {
+      background-color: #f48fb1;
+      color: white;
+      position: static;
+    }
+
+    .balloon {
+      position: absolute;
+      width: 40px;
+      height: 60px;
+      background-color: #f48fb1;
+      border-radius: 50%;
+      animation: float 6s infinite;
+      opacity: 0.8;
+    }
+
+    .balloon::before {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 15px;
+      width: 10px;
+      height: 20px;
+      background-color: #f48fb1;
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+      100% { transform: translateY(0); }
+    }
+
+    .pop {
+      animation: pop 0.5s forwards;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(2); opacity: 0; }
+    }
+
+    /* Mobile-specific adjustments */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      .button {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+      }
+
+      .balloon {
+        width: 30px;
+        height: 50px;
+      }
+
+      .balloon::before {
+        left: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Will you be my Valentine?</h1>
+    <div class="buttons">
+      <button id="yesButton" class="button">Yes</button>
+      <button id="noButton" class="button">No</button>
+    </div>
+    <div id="balloons">
+      <!-- Balloons will be generated here -->
+    </div>
+  </div>
+
+  <script>
+    const noButton = document.getElementById('noButton');
+    const yesButton = document.getElementById('yesButton');
+    const balloonsContainer = document.getElementById('balloons');
+
+    // Function to move the "No" button randomly
+    noButton.addEventListener('mouseover', () => {
+      const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
+      const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
+      noButton.style.position = 'absolute';
+      noButton.style.left = `${x}px`;
+      noButton.style.top = `${y}px`;
+    });
+
+    // Function to create balloons
+    function createBalloons() {
+      for (let i = 0; i < 20; i++) {
+        const balloon = document.createElement('div');
+        balloon.classList.add('balloon');
+        balloon.style.left = `${Math.random() * 100}vw`;
+        balloon.style.animationDuration = `${Math.random() * 4 + 3}s`;
+        balloonsContainer.appendChild(balloon);
+      }
+    }
+
+    // Function to pop balloons
+    function popBalloons() {
+      const balloons = document.querySelectorAll('.balloon');
+      balloons.forEach((balloon, index) => {
+        setTimeout(() => {
+          balloon.classList.add('pop');
+        }, index * 100);
+      });
+    }
+
+    // Event listener for the "Yes" button
+    yesButton.addEventListener('click', () => {
+      popBalloons();
+      alert('Yay! You made my day! 💖');
+    });
+
+    // Create balloons on page load
+    createBalloons();
+  </script>
+</body>
+</html>
